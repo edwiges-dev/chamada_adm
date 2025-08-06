@@ -43,11 +43,11 @@ class Aparencer:
 
         # --- Form Fields ---
 
-        # Nome do Professor (Professor Name)
-        self.label_professor_nome = ttk.Label(self.frame, text="Nome do Professor:")
-        self.label_professor_nome.grid(row=2, column=1, pady=10, padx=20, sticky="w") # Aligns label to the west (left)
-        self.entry_professor_nome = ttk.Entry(self.frame, width=40) # Increased width for entries
-        self.entry_professor_nome.grid(row=2, column=2, pady=10, padx=20, sticky="ew") # Expands entry horizontally
+        # Nome do Aluno (Student Name)
+        self.label_nome = ttk.Label(self.frame, text="Nome do Aluno:")
+        self.label_nome.grid(row=2, column=1, pady=10, padx=20, sticky="w") # Aligns label to the west (left)
+        self.entry_nome = ttk.Entry(self.frame, width=40) # Increased width for entries
+        self.entry_nome.grid(row=2, column=2, pady=10, padx=20, sticky="ew") # Expands entry horizontally
 
         # CPF (Brazilian Individual Taxpayer Registry)
         self.label_cpf = ttk.Label(self.frame, text="CPF:")
@@ -73,37 +73,13 @@ class Aparencer:
         self.entry_matricula = ttk.Entry(self.frame, width=40)
         self.entry_matricula.grid(row=6, column=2, pady=10, padx=20, sticky="ew")
 
-        # Curso 1 (Course 1)
-        self.label_curso1 = ttk.Label(self.frame, text="Curso 1:")
-        self.label_curso1.grid(row=7, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso1 = ttk.Entry(self.frame, width=40)
-        self.entry_curso1.grid(row=7, column=2, pady=10, padx=20, sticky="ew")
-
-        # Curso 2 (Course 2)
-        self.label_curso2 = ttk.Label(self.frame, text="Curso 2:")
-        self.label_curso2.grid(row=8, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso2 = ttk.Entry(self.frame, width=40)
-        self.entry_curso2.grid(row=8, column=2, pady=10, padx=20, sticky="ew")
-
-        # Curso 3 (Course 3)
-        self.label_curso3 = ttk.Label(self.frame, text="Curso 3:")
-        self.label_curso3.grid(row=9, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso3 = ttk.Entry(self.frame, width=40)
-        self.entry_curso3.grid(row=9, column=2, pady=10, padx=20, sticky="ew")
-
-        # Curso 4 (Course 4)
-        self.label_curso4 = ttk.Label(self.frame, text="Curso 4:")
-        self.label_curso4.grid(row=10, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso4 = ttk.Entry(self.frame, width=40)
-        self.entry_curso4.grid(row=10, column=2, pady=10, padx=20, sticky="ew")
-
         # Cadastrar Button (Register Button)
         # Spans columns 1 and 2 to be centered below the form fields
         self.button = ttk.Button(self.frame, text="Cadastrar", command=lambda: print("Cadastrado!"))
-        self.button.grid(row=11, column=1, columnspan=2, pady=(20, 0), sticky="ew") # pady for spacing above button
+        self.button.grid(row=7, column=1, columnspan=2, pady=(20, 0), sticky="ew") # pady for spacing above button
 
         # Row after the button will be empty and expand to push content up
-        self.frame.grid_rowconfigure(12, weight=1)
+        self.frame.grid_rowconfigure(8, weight=1)
 
 # Main application entry point
 if __name__ == "__main__":
