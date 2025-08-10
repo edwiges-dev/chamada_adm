@@ -1,88 +1,121 @@
 import tkinter as tk
 from tkinter import ttk
 
-class Aparencer:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Aparencer")
-        self.root.geometry("1080x720") # Set initial window size
+class TelaCadastroCurso(ttk.Frame):
+    """
+    Tela para cadastro de novos cursos.
+    Esta classe organiza todos os elementos visuais (widgets) e a lógica da tela.
+    """
+    def __init__(self, container):
+        super().__init__(container)
+        self.container = container
 
-        # Create a style object for consistent widget appearance
-        self.style = ttk.Style()
+        # --- Configuração da Janela Principal ---
+        # Define o título e o tamanho inicial da janela.
+        self.container.title("Cadastro de Cursos")
+        self.container.geometry("800x600") # Tamanho inicial um pouco menor para telas menores
+        self.container.minsize(600, 500) # Define um tamanho mínimo para a janela
 
-        # Configure the style for the main frame, buttons, and labels
-        self.style.configure("TFrame", background="lightblue")
-        self.style.configure("TButton", background="lightgreen", foreground="black", font=("Arial", 14), padding=10)
-        self.style.configure("TLabel", background="lightblue", font=("Arial", 16)) # Ensure labels have consistent background and font
+        # --- Configuração de Estilos ---
+        # Usamos ttk.Style para dar uma aparência mais moderna e consistente.
+        self.style = ttk.Style(self.container)
+        self.style.theme_use("clam") # 'clam', 'alt', 'default', 'classic' são boas opções
 
-        # Create a main frame that will hold all content
-        # This frame is placed in the root window and will expand to fill it
-        self.frame = ttk.Frame(self.root, padding=20) # Added padding around the content
-        self.frame.grid(row=0, column=0, sticky="nsew") # Make the frame expand with the root window
-        self.frame.configure(style="TFrame") # Apply the defined style
+        # Estilo para o frame principal
+        self.style.configure("TFrame", background="#f0f0f0")
+        # Estilo para os labels (rótulos)
+        self.style.configure("TLabel", background="#f0f0f0", font=("Arial", 12))
+        # Estilo para o título
+        self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
+        # Estilo para os botões
+        self.style.configure("TButton", font=("Arial", 12, "bold"), padding=10)
+        # Estilo para os campos de entrada
+        self.style.configure("TEntry", font=("Arial", 12), padding=5)
 
-        # Configure the root window's grid to make the frame expandable
-        self.root.grid_rowconfigure(0, weight=1)
-        self.root.grid_columnconfigure(0, weight=1)
+        # --- Layout Responsivo ---
+        # Configura o grid da janela principal para que o frame se expanda
+        # com o redimensionamento da janela.
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
-        # Configure the frame's internal grid to centralize content
-        # Column 0 and Column 3 are "padding" columns that will expand
-        # Column 1 is for labels, Column 2 is for entry fields
-        self.frame.grid_columnconfigure(0, weight=1) # Left padding column
-        self.frame.grid_columnconfigure(1, weight=0) # Labels column (content-sized, no extra weight)
-        self.frame.grid_columnconfigure(2, weight=0) # Entries column (content-sized, no extra weight)
-        self.frame.grid_columnconfigure(3, weight=1) # Right padding column
+        # Coloca este frame (self) na janela principal (container)
+        self.grid(row=0, column=0, sticky="nsew")
+        self.configure(style="TFrame")
 
-        # Row 0 is a "padding" row that will expand to push content down
-        self.frame.grid_rowconfigure(0, weight=1)
+        # Chama o método que cria e posiciona todos os widgets
+        self._criar_widgets()
 
-        # Main title label for the administrative personnel
-        # It spans columns 1 and 2 to be centered above the form fields
-        self.admin_label = ttk.Label(self.frame, text="Nome da Pessoal Administrativa do Banco de Dados", anchor="center")
-        self.admin_label.grid(row=1, column=1, columnspan=2, pady=(0, 20), sticky="ew") # pady for spacing below title
+    def _criar_widgets(self):
+        """
+        Cria e organiza todos os widgets (labels, entries, button) na tela.
+        O prefixo '_' indica que este é um método para uso interno da classe.
+        """
+        # --- Configuração do Grid Interno do Frame ---
+        # Criamos colunas "invisíveis" nas laterais (0 e 3) para empurrar o conteúdo
+        # para o centro. O 'weight=1' faz com que elas ocupem o espaço extra.
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0) # Coluna para os labels
+        self.grid_columnconfigure(2, weight=0) # Coluna para os campos de texto
+        self.grid_columnconfigure(3, weight=1)
 
-        # --- Form Fields ---
+        # --- Título da Página ---
+        self.label_titulo = ttk.Label(self, text="Informações do Curso", style="Title.TLabel")
+        # 'columnspan=2' faz o título ocupar as duas colunas centrais.
+        self.label_titulo.grid(row=0, column=1, columnspan=2, pady=(20, 30), sticky="ew")
 
-        # Nome do Aluno (Student Name)
-        self.label_nome = ttk.Label(self.frame, text="Nome do Aluno:")
-        self.label_nome.grid(row=2, column=1, pady=10, padx=20, sticky="w") # Aligns label to the west (left)
-        self.entry_nome = ttk.Entry(self.frame, width=40) # Increased width for entries
-        self.entry_nome.grid(row=2, column=2, pady=10, padx=20, sticky="ew") # Expands entry horizontally
+        # --- Campos do Formulário ---
+        # Lista de campos para criar o formulário de forma mais fácil
+        campos = [
+            "Nome do curso:", "Código do curso:", "Carga horária:",
+            "Data de início:", "Data de fim:", "Tipo do curso:",
+            "Modalidade:", "Turno:"
+        ]
 
-        # CPF (Brazilian Individual Taxpayer Registry)
-        self.label_cpf = ttk.Label(self.frame, text="CPF:")
-        self.label_cpf.grid(row=3, column=1, pady=10, padx=20, sticky="w")
-        self.entry_cpf = ttk.Entry(self.frame, width=40)
-        self.entry_cpf.grid(row=3, column=2, pady=10, padx=20, sticky="ew")
+        # Loop para criar cada label e entry
+        # 'enumerate' nos dá o índice (i) e o valor (texto_label) da lista
+        for i, texto_label in enumerate(campos):
+            label = ttk.Label(self, text=texto_label)
+            # 'sticky="w"' alinha o texto do label à esquerda (West)
+            label.grid(row=i + 1, column=1, padx=(0, 10), pady=5, sticky="w")
 
-        # Telefone (Phone Number)
-        self.label_telefone = ttk.Label(self.frame, text="Telefone:")
-        self.label_telefone.grid(row=4, column=1, pady=10, padx=20, sticky="w")
-        self.entry_telefone = ttk.Entry(self.frame, width=40)
-        self.entry_telefone.grid(row=4, column=2, pady=10, padx=20, sticky="ew")
+            entry = ttk.Entry(self, width=40)
+            # 'sticky="ew"' faz o campo de texto se esticar horizontalmente (East-West)
+            entry.grid(row=i + 1, column=2, pady=5, sticky="ew")
 
-        # E-mail
-        self.label_email = ttk.Label(self.frame, text="E-mail:")
-        self.label_email.grid(row=5, column=1, pady=10, padx=20, sticky="w")
-        self.entry_email = ttk.Entry(self.frame, width=40)
-        self.entry_email.grid(row=5, column=2, pady=10, padx=20, sticky="ew")
+            # Guardamos uma referência ao entry para poder pegar o valor depois
+            # Ex: self.entry_nome_do_curso, self.entry_codigo_do_curso, etc.
+            # Isso é feito transformando o texto do label em um nome de variável válido.
+            nome_variavel = "entry_" + texto_label.lower().replace(" ", "_").replace(":", "")
+            setattr(self, nome_variavel, entry)
 
-        # Matrícula (Enrollment Number)
-        self.label_matricula = ttk.Label(self.frame, text="Matrícula:")
-        self.label_matricula.grid(row=6, column=1, pady=10, padx=20, sticky="w")
-        self.entry_matricula = ttk.Entry(self.frame, width=40)
-        self.entry_matricula.grid(row=6, column=2, pady=10, padx=20, sticky="ew")
 
-        # Cadastrar Button (Register Button)
-        # Spans columns 1 and 2 to be centered below the form fields
-        self.button = ttk.Button(self.frame, text="Cadastrar", command=lambda: print("Cadastrado!"))
-        self.button.grid(row=7, column=1, columnspan=2, pady=(20, 0), sticky="ew") # pady for spacing above button
+        # --- Botão de Cadastro ---
+        self.botao_cadastrar = ttk.Button(self, text="Cadastrar", command=self.cadastrar_curso)
+        self.botao_cadastrar.grid(row=len(campos) + 1, column=1, columnspan=2, pady=(30, 0), sticky="ew")
 
-        # Row after the button will be empty and expand to push content up
-        self.frame.grid_rowconfigure(8, weight=1)
+    def cadastrar_curso(self):
+        """
+        Função chamada quando o botão 'Cadastrar' é pressionado.
+        Aqui você colocaria a lógica para salvar os dados.
+        """
+        # Exemplo de como pegar os valores dos campos:
+        nome_curso = self.entry_nome_do_curso.get()
+        codigo_curso = self.entry_código_do_curso.get()
 
-# Main application entry point
+        print("--- Dados do Curso Cadastrado ---")
+        print(f"Nome: {nome_curso}")
+        print(f"Código: {codigo_curso}")
+        # Você pode adicionar os outros campos aqui
+        print("---------------------------------")
+        # Futuramente, aqui você pode adicionar a lógica para salvar em um banco de dados
+        # ou em um arquivo.
+
+
 if __name__ == "__main__":
-    root = tk.Tk() # Create the main Tkinter window
-    app = Aparencer(root) # Instantiate the Aparencer application
-    root.mainloop() # Start the Tkinter event loop
+    # Cria a janela principal da aplicação
+    root = tk.Tk()
+    # Cria a nossa tela de cadastro dentro da janela principal
+    app = TelaCadastroCurso(root)
+    # Inicia o loop principal da aplicação, que a mantém aberta e responsiva
+    root.mainloop()
+
