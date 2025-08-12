@@ -68,7 +68,7 @@ class TelaCadastroCurso(ttk.Frame):
         campos = [
             "Nome do curso:", "Código do curso:", "Carga horária:",
             "Data de início:", "Data de fim:", "Tipo do curso:",
-            "Modalidade:", "Turno:"
+            "Modalidade:", "Turno:", "Unidade:"
         ]
 
         # Loop para criar cada label e entry
@@ -109,7 +109,8 @@ class TelaCadastroCurso(ttk.Frame):
         print("---------------------------------")
         # Futuramente, aqui você pode adicionar a lógica para salvar em um banco de dados
         # ou em um arquivo.
-
+    def notificao_de_campo_limpo(self):
+        self.mensagem
 
 if __name__ == "__main__":
     # Cria a janela principal da aplicação
