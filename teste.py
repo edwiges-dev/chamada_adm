@@ -100,9 +100,10 @@ class TelaCadastroCurso(ttk.Frame):
 
         # 2. Validar os dados
         # Verificamos se o campo mais importante, o nome, não está vazio.
-        if not dados_curso["nome_do_curso"].strip():
-            self._mostrar_notificacao("O campo 'Nome do curso' é obrigatório!", "Error")
+        if not all (dados_curso.values()) or not dados_curso["nome_do_curso"]:
+            self._mostrar_notificacao("Todos os campos são obrigatórios!", "Error")
             return # Para a execução da função aqui se a validação falhar
+            
 
         # 3. Salvar os dados (Simulação)
         # No mundo real, aqui você chamaria a função para salvar no banco de dados.
