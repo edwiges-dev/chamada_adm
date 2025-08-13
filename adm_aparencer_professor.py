@@ -1,112 +1,110 @@
 import tkinter as tk
 from tkinter import ttk
 
-class Aparencer:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Aparencer")
-        self.root.geometry("1080x720") # Set initial window size
+class TelaCadastroProfessor(ttk.Frame):
+    """
+    Tela para o cadastro de dados de um professor.
+    A classe organiza a criação de todos os widgets e a lógica da tela.
+    """
+    def __init__(self, container):
+        super().__init__(container)
+        self.container = container
 
-        # Create a style object for consistent widget appearance
-        self.style = ttk.Style()
+        # --- Configuração da Janela Principal ---
+        self.container.title("Cadastro de Professores")
+        self.container.geometry("1080x720")
+        self.container.minsize(700, 600) # Tamanho mínimo para a janela
 
-        # Configure the style for the main frame, buttons, and labels
-        self.style.configure("TFrame", background="lightblue")
-        self.style.configure("TButton", background="lightgreen", foreground="black", font=("Arial", 14), padding=10)
-        self.style.configure("TLabel", background="lightblue", font=("Arial", 16)) # Ensure labels have consistent background and font
+        # --- Configuração de Estilos ---
+        self.style = ttk.Style(self.container)
+        self.style.theme_use("clam")
 
-        # Create a main frame that will hold all content
-        # This frame is placed in the root window and will expand to fill it
-        self.frame = ttk.Frame(self.root, padding=20) # Added padding around the content
-        self.frame.grid(row=0, column=0, sticky="nsew") # Make the frame expand with the root window
-        self.frame.configure(style="TFrame") # Apply the defined style
+        BG_COLOR = "#e0e8f0" # Um azul acinzentado claro
+        self.style.configure("TFrame", background=BG_COLOR)
+        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12))
+        self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
+        self.style.configure("TButton", font=("Arial", 12, "bold"), padding=10)
+        self.style.configure("TEntry", font=("Arial", 12), padding=5)
 
-        # Configure the root window's grid to make the frame expandable
-        self.root.grid_rowconfigure(0, weight=1)
-        self.root.grid_columnconfigure(0, weight=1)
+        # --- Layout Responsivo ---
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
-        # Configure the frame's internal grid to centralize content
-        # Column 0 and Column 3 are "padding" columns that will expand
-        # Column 1 is for labels, Column 2 is for entry fields
-        self.frame.grid_columnconfigure(0, weight=1) # Left padding column
-        self.frame.grid_columnconfigure(1, weight=0) # Labels column (content-sized, no extra weight)
-        self.frame.grid_columnconfigure(2, weight=0) # Entries column (content-sized, no extra weight)
-        self.frame.grid_columnconfigure(3, weight=1) # Right padding column
+        self.grid(row=0, column=0, sticky="nsew")
+        self.configure(style="TFrame")
 
-        # Row 0 is a "padding" row that will expand to push content down
-        self.frame.grid_rowconfigure(0, weight=1)
+        # Chama o método que cria e posiciona todos os widgets
+        self._criar_widgets()
 
-        # Main title label for the administrative personnel
-        # It spans columns 1 and 2 to be centered above the form fields
-        self.admin_label = ttk.Label(self.frame, text="Nome da Pessoal Administrativa do Banco de Dados", anchor="center")
-        self.admin_label.grid(row=1, column=1, columnspan=2, pady=(0, 20), sticky="ew") # pady for spacing below title
+    def _criar_widgets(self):
+        """
+        Cria e organiza todos os widgets (labels, entries, button) na tela.
+        """
+        # --- Configuração do Grid Interno para Centralização ---
+        # Colunas 0 e 3 são espaçadores invisíveis.
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0) # Coluna dos labels
+        self.grid_columnconfigure(2, weight=1) # Coluna dos entries (com peso para expandir)
+        self.grid_columnconfigure(3, weight=1)
 
-        # --- Form Fields ---
+        # --- Título ---
+        titulo = ttk.Label(self, text="Cadastro de Pessoal Administrativo", style="Title.TLabel")
+        titulo.grid(row=0, column=1, columnspan=2, pady=(20, 30))
 
-        # Nome do Professor (Professor Name)
-        self.label_professor_nome = ttk.Label(self.frame, text="Nome do Professor:")
-        self.label_professor_nome.grid(row=2, column=1, pady=10, padx=20, sticky="w") # Aligns label to the west (left)
-        self.entry_professor_nome = ttk.Entry(self.frame, width=40) # Increased width for entries
-        self.entry_professor_nome.grid(row=2, column=2, pady=10, padx=20, sticky="ew") # Expands entry horizontally
+        # --- Campos do Formulário ---
+        # Criamos uma lista com todos os campos que queremos no formulário.
+        # Se amanhã você precisar adicionar um novo campo, basta adicioná-lo a esta lista!
+        campos_formulario = [
+            "Nome do Professor:", "CPF:", "Telefone:", "E-mail:", "Matrícula:",
+            "Curso 1:", "Curso 2:", "Curso 3:", "Curso 4:"
+        ]
 
-        # CPF (Brazilian Individual Taxpayer Registry)
-        self.label_cpf = ttk.Label(self.frame, text="CPF:")
-        self.label_cpf.grid(row=3, column=1, pady=10, padx=20, sticky="w")
-        self.entry_cpf = ttk.Entry(self.frame, width=40)
-        self.entry_cpf.grid(row=3, column=2, pady=10, padx=20, sticky="ew")
+        # Loop para criar cada label e entry de forma automática
+        for i, texto_label in enumerate(campos_formulario):
+            # O 'i+1' é para começar a colocar os campos a partir da linha 1 (abaixo do título)
+            linha_atual = i + 1
 
-        # Telefone (Phone Number)
-        self.label_telefone = ttk.Label(self.frame, text="Telefone:")
-        self.label_telefone.grid(row=4, column=1, pady=10, padx=20, sticky="w")
-        self.entry_telefone = ttk.Entry(self.frame, width=40)
-        self.entry_telefone.grid(row=4, column=2, pady=10, padx=20, sticky="ew")
+            label = ttk.Label(self, text=texto_label)
+            label.grid(row=linha_atual, column=1, padx=(0, 10), pady=5, sticky="w")
 
-        # E-mail
-        self.label_email = ttk.Label(self.frame, text="E-mail:")
-        self.label_email.grid(row=5, column=1, pady=10, padx=20, sticky="w")
-        self.entry_email = ttk.Entry(self.frame, width=40)
-        self.entry_email.grid(row=5, column=2, pady=10, padx=20, sticky="ew")
+            entry = ttk.Entry(self, width=40)
+            entry.grid(row=linha_atual, column=2, pady=5, sticky="ew")
 
-        # Matrícula (Enrollment Number)
-        self.label_matricula = ttk.Label(self.frame, text="Matrícula:")
-        self.label_matricula.grid(row=6, column=1, pady=10, padx=20, sticky="w")
-        self.entry_matricula = ttk.Entry(self.frame, width=40)
-        self.entry_matricula.grid(row=6, column=2, pady=10, padx=20, sticky="ew")
+            # Guardamos uma referência ao entry para poder pegar o valor depois.
+            # Transforma "Nome do Professor:" em "entry_nome_do_professor"
+            nome_variavel = "entry_" + texto_label.lower().replace(" ", "_").replace(":", "")
+            setattr(self, nome_variavel, entry)
 
-        # Curso 1 (Course 1)
-        self.label_curso1 = ttk.Label(self.frame, text="Curso 1:")
-        self.label_curso1.grid(row=7, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso1 = ttk.Entry(self.frame, width=40)
-        self.entry_curso1.grid(row=7, column=2, pady=10, padx=20, sticky="ew")
+        # --- Botão de Cadastro ---
+        # A linha do botão será a próxima linha depois do último campo do loop
+        linha_botao = len(campos_formulario) + 1
+        botao_cadastrar = ttk.Button(self, text="Cadastrar", command=self.cadastrar_professor)
+        botao_cadastrar.grid(row=linha_botao, column=1, columnspan=2, pady=(30, 20), sticky="ew")
 
-        # Curso 2 (Course 2)
-        self.label_curso2 = ttk.Label(self.frame, text="Curso 2:")
-        self.label_curso2.grid(row=8, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso2 = ttk.Entry(self.frame, width=40)
-        self.entry_curso2.grid(row=8, column=2, pady=10, padx=20, sticky="ew")
+    def cadastrar_professor(self):
+        """
+        Função chamada quando o botão 'Cadastrar' é pressionado.
+        Coleta os dados de todos os campos e os imprime.
+        """
+        print("--- Dados do Professor Cadastrado ---")
 
-        # Curso 3 (Course 3)
-        self.label_curso3 = ttk.Label(self.frame, text="Curso 3:")
-        self.label_curso3.grid(row=9, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso3 = ttk.Entry(self.frame, width=40)
-        self.entry_curso3.grid(row=9, column=2, pady=10, padx=20, sticky="ew")
+        # Exemplo de como pegar os valores dos campos que foram criados dinamicamente:
+        nome_prof = self.entry_nome_do_professor.get()
+        cpf_prof = self.entry_cpf.get()
+        email_prof = self.entry_e_mail.get() # Note que o "E-mail" virou "e_mail"
 
-        # Curso 4 (Course 4)
-        self.label_curso4 = ttk.Label(self.frame, text="Curso 4:")
-        self.label_curso4.grid(row=10, column=1, pady=10, padx=20, sticky="w")
-        self.entry_curso4 = ttk.Entry(self.frame, width=40)
-        self.entry_curso4.grid(row=10, column=2, pady=10, padx=20, sticky="ew")
+        print(f"Nome: {nome_prof}")
+        print(f"CPF: {cpf_prof}")
+        print(f"E-mail: {email_prof}")
+        # Você pode adicionar os outros campos aqui...
+        print("---------------------------------")
+        # Aqui viria a lógica para salvar os dados em um banco de dados.
 
-        # Cadastrar Button (Register Button)
-        # Spans columns 1 and 2 to be centered below the form fields
-        self.button = ttk.Button(self.frame, text="Cadastrar", command=lambda: print("Cadastrado!"))
-        self.button.grid(row=11, column=1, columnspan=2, pady=(20, 0), sticky="ew") # pady for spacing above button
 
-        # Row after the button will be empty and expand to push content up
-        self.frame.grid_rowconfigure(12, weight=1)
-
-# Main application entry point
 if __name__ == "__main__":
-    root = tk.Tk() # Create the main Tkinter window
-    app = Aparencer(root) # Instantiate the Aparencer application
-    root.mainloop() # Start the Tkinter event loop
+    # Cria a janela principal da aplicação
+    root = tk.Tk()
+    # Cria a nossa tela de cadastro dentro da janela principal
+    app = TelaCadastroProfessor(root)
+    # Inicia o loop principal da aplicação
+    root.mainloop()
