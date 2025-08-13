@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 
 class TelaCadastroAluno(ttk.Frame):
     """
@@ -93,7 +94,40 @@ class TelaCadastroAluno(ttk.Frame):
         print(f"CPF: {cpf_aluno}")
         print("---------------------------------")
         # Aqui viria a lógica para salvar os dados em um banco de dados.
+        
+    def cadastrar_curso(self):
+        """
+        Coleta os dados do curso, valida, salva (simulação) e dá feedback ao usuário.
+        """
+        # 1. Coletar dados de todos os campos
+        dados_curso = {}
+        for nome, entry in self.entries.items():
+            dados_curso[nome] = entry.get()
 
+        # 2. Validação simples (pode ser expandida)
+        if not all(dados_curso.values()):
+            self.mostrar_mensagem("Por favor, preencha todos os campos.")
+            return
+
+        # 3. Simulação de salvamento (aqui você integraria com seu banco de dados)
+        print("Curso cadastrado com sucesso:", dados_curso)
+
+        # 4. Feedback ao usuário
+        self.mostrar_mensagem("Curso cadastrado com sucesso!")
+    
+    def mostrar_mensagem(self, mensagem):
+        """
+        Exibe uma mensagem de feedback ao usuário.
+        """
+        messagebox.showinfo("Informação", mensagem)
+
+    def _limpar_campos(self):
+        """
+        Limpa o texto de todos os campos de entrada (Entry).
+        """
+        for entry in self.entries.values():
+            entry.delete(0, tk.END) 
+    
 
 if __name__ == "__main__":
     # Cria a janela principal da aplicação
