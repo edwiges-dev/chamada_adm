@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 
 class TelaCadastroProfessor(ttk.Frame):
     """
@@ -99,6 +100,57 @@ class TelaCadastroProfessor(ttk.Frame):
         # Você pode adicionar os outros campos aqui...
         print("---------------------------------")
         # Aqui viria a lógica para salvar os dados em um banco de dados.
+    
+    def cadastrar_professor(self):
+        """
+        Coleta os dados dos campos, valida e simula o cadastro.
+        """
+        # Coleta os dados de todos os campos
+        dados_professor = {
+            "nome": self.entry_nome_do_professor.get(),
+            "cpf": self.entry_cpf.get(),
+            "telefone": self.entry_telefone.get(),
+            "email": self.entry_e_mail.get(),
+            "matricula": self.entry_matricula.get(),
+            "curso1": self.entry_curso_1.get(),
+            "curso2": self.entry_curso_2.get(),
+            "curso3": self.entry_curso_3.get(),
+            "curso4": self.entry_curso_4.get()
+        }
+
+        # Validação simples: Verifica se o nome e CPF estão preenchidos
+        if not dados_professor["nome"] or not dados_professor["cpf"]:
+            messagebox.showerror("Erro", "Nome e CPF são obrigatórios!")
+            return
+
+        # Simulação de cadastro (aqui você chamaria a função para salvar no banco de dados)
+        print("--- Dados do Professor para Salvar ---")
+        for campo, valor in dados_professor.items():
+            print(f"{campo.replace('_', ' ').title()}: {valor}")
+        print("---------------------------------")
+
+        # Feedback ao usuário
+        messagebox.showinfo("Sucesso", "Professor cadastrado com sucesso!")
+        
+    def _mostrar_notificacao(self, mensagem, tipo):
+        """
+        Exibe uma mensagem para o usuário.
+        'tipo' pode ser "Success" ou "Error".
+        """
+        if tipo == "Success":
+            messagebox.showinfo("Sucesso", mensagem)
+        elif tipo == "Error":
+            messagebox.showerror("Erro", mensagem)
+        
+    def _limpar_campos(self):
+        """
+        Limpa o texto de todos os campos de entrada (Entry).
+        """
+        for campo in ["nome_do_professor", "cpf", "telefone", "e_mail", "matricula",
+                      "curso_1", "curso_2", "curso_3", "curso_4"]:
+            entry = getattr(self, f"entry_{campo}", None)
+            if entry:
+                entry.delete(0, tk.END)
 
 
 if __name__ == "__main__":
