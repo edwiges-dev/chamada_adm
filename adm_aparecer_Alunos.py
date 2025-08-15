@@ -81,45 +81,24 @@ class TelaCadastroAluno(ttk.Frame):
 
     def cadastrar_aluno(self):
         """
-        Função chamada quando o botão 'Cadastrar' é pressionado.
-        Coleta os dados de todos os campos e os imprime.
+        Método para cadastrar um aluno.
         """
-        print("--- Dados do Aluno Cadastrado ---")
-
-        # Exemplo de como pegar os valores dos campos:
-        nome_aluno = self.entry_nome_do_aluno.get()
-        cpf_aluno = self.entry_cpf.get()
-
-        print(f"Nome: {nome_aluno}")
-        print(f"CPF: {cpf_aluno}")
-        print("---------------------------------")
-        # Aqui viria a lógica para salvar os dados em um banco de dados.
-        
-    def cadastrar_curso(self):
-        """
-        Coleta os dados do curso, valida, salva (simulação) e dá feedback ao usuário.
-        """
-        # 1. Coletar dados de todos os campos
-        dados_curso = {}
-        for nome, entry in self.entries.items():
-            dados_curso[nome] = entry.get()
-
-        # 2. Validação simples (pode ser expandida)
-        if not all(dados_curso.values()):
-            self.mostrar_mensagem("Por favor, preencha todos os campos.")
+        # Obtém os valores dos campos de entrada (Entry)
+        dados_aluno = {}
+        for label, entry in self.entries.items():
+            dados_aluno[label] = entry.get()
+            # Verifica se todos os campos obrigatórios foram preenchidos
+        if not all(dados_aluno.values()):
+            self.mostrar_mensagem("Por favor, preencha todos os campos obrigatórios.")
             return
-
-        # 3. Simulação de salvamento (aqui você integraria com seu banco de dados)
-        print("Curso cadastrado com sucesso:", dados_curso)
-
-        # 4. Feedback ao usuário
-        self.mostrar_mensagem("Curso cadastrado com sucesso!")
-    
+        
     def mostrar_mensagem(self, mensagem):
         """
         Exibe uma mensagem de feedback ao usuário.
         """
         messagebox.showinfo("Informação", mensagem)
+
+        
 
     def _limpar_campos(self):
         """
