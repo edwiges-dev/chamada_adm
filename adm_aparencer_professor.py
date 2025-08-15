@@ -56,7 +56,7 @@ class TelaCadastroProfessor(ttk.Frame):
         # Criamos uma lista com todos os campos que queremos no formulário.
         # Se amanhã você precisar adicionar um novo campo, basta adicioná-lo a esta lista!
         campos_formulario = [
-            "Nome do Professor:", "CPF:", "Telefone:", "E-mail:", "Matrícula:",
+            "Nome do Professor:", "CPF:", "Telefone:", "email:", "Matrícula:",
             "Curso 1:", "Curso 2:", "Curso 3:", "Curso 4:"
         ]
 
@@ -92,7 +92,7 @@ class TelaCadastroProfessor(ttk.Frame):
         # Exemplo de como pegar os valores dos campos que foram criados dinamicamente:
         nome_prof = self.entry_nome_do_professor.get()
         cpf_prof = self.entry_cpf.get()
-        email_prof = self.entry_e_mail.get() # Note que o "E-mail" virou "e_mail"
+        email_prof = self.entry_email.get() # Note que o "E-mail" virou "e_mail"
 
         print(f"Nome: {nome_prof}")
         print(f"CPF: {cpf_prof}")
@@ -101,7 +101,7 @@ class TelaCadastroProfessor(ttk.Frame):
         print("---------------------------------")
         # Aqui viria a lógica para salvar os dados em um banco de dados.
     
-    def cadastrar_professor(self):
+    def cadastrar_professor2(self):
         """
         Coleta os dados dos campos, valida e simula o cadastro.
         """
@@ -110,7 +110,7 @@ class TelaCadastroProfessor(ttk.Frame):
             "nome": self.entry_nome_do_professor.get(),
             "cpf": self.entry_cpf.get(),
             "telefone": self.entry_telefone.get(),
-            "email": self.entry_e_mail.get(),
+            "email": self.entry_email.get(),
             "matricula": self.entry_matricula.get(),
             "curso1": self.entry_curso_1.get(),
             "curso2": self.entry_curso_2.get(),
@@ -146,7 +146,7 @@ class TelaCadastroProfessor(ttk.Frame):
         """
         Limpa o texto de todos os campos de entrada (Entry).
         """
-        for campo in ["nome_do_professor", "cpf", "telefone", "e_mail", "matricula",
+        for campo in ["nome_do_professor", "cpf", "telefone", "email", "matricula",
                       "curso_1", "curso_2", "curso_3", "curso_4"]:
             entry = getattr(self, f"entry_{campo}", None)
             if entry:
