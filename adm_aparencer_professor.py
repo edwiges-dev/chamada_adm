@@ -14,7 +14,7 @@ class TelaCadastroProfessor(ttk.Frame):
         # --- Configuração da Janela Principal ---
         self.container.title("Cadastro de Professores")
         self.container.geometry("1080x720")
-        self.container.minsize(700, 600) # Tamanho mínimo para a janela
+        self.container.minsize(700, 550) # Tamanho mínimo ajustado
 
         # --- Configuração de Estilos ---
         self.style = ttk.Style(self.container)
@@ -26,6 +26,8 @@ class TelaCadastroProfessor(ttk.Frame):
         self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
         self.style.configure("TButton", font=("Arial", 12, "bold"), padding=10)
         self.style.configure("TEntry", font=("Arial", 12), padding=5)
+        # Adicionado estilo para o Combobox para manter a consistência
+        self.style.configure("TCombobox", font=("Arial", 12), padding=5)
 
         # --- Layout Responsivo ---
         self.container.grid_rowconfigure(0, weight=1)
@@ -39,13 +41,12 @@ class TelaCadastroProfessor(ttk.Frame):
 
     def _criar_widgets(self):
         """
-        Cria e organiza todos os widgets (labels, entries, button) na tela.
+        Cria e organiza todos os widgets (labels, entries, combobox, button) na tela.
         """
         # --- Configuração do Grid Interno para Centralização ---
-        # Colunas 0 e 3 são espaçadores invisíveis.
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0) # Coluna dos labels
-        self.grid_columnconfigure(2, weight=1) # Coluna dos entries (com peso para expandir)
+        self.grid_columnconfigure(2, weight=1) # Coluna dos widgets de entrada
         self.grid_columnconfigure(3, weight=1)
 
         # --- Título ---
@@ -53,84 +54,78 @@ class TelaCadastroProfessor(ttk.Frame):
         titulo.grid(row=0, column=1, columnspan=2, pady=(20, 30))
 
         # --- Campos do Formulário ---
-        # Criamos uma lista com todos os campos que queremos no formulário.
-        # Se amanhã você precisar adicionar um novo campo, basta adicioná-lo a esta lista!
+        # *** ALTERAÇÃO 1: Atualizamos a lista de campos. ***
+        # Removemos os 4 campos de curso e adicionamos um único campo "Curso".
         campos_formulario = [
-            "Nome do Professor:", "CPF:", "Telefone:", "email:", "Matrícula:",
-            "Curso 1:", "Curso 2:", "Curso 3:", "Curso 4:"
+            "Nome do Professor:", "CPF:", "Telefone:", "email:", "Matrícula:", "Cursos:"
         ]
 
-        # Loop para criar cada label e entry de forma automática
+        # Lista de opções para o nosso Combobox
+        opcoes_cursos = ["Cursos 1", "Cursos 2", "Cursos 3", "Cursos 4", "Cursos 5"]
+
+        # Loop para criar cada label e widget de entrada
         for i, texto_label in enumerate(campos_formulario):
-            # O 'i+1' é para começar a colocar os campos a partir da linha 1 (abaixo do título)
             linha_atual = i + 1
 
             label = ttk.Label(self, text=texto_label)
             label.grid(row=linha_atual, column=1, padx=(0, 10), pady=5, sticky="w")
+            
+            # Transforma o texto do label em um nome de variável para o widget
+            # Ex: "Nome do Professor:" vira "entry_nome_do_professor"
+            nome_variavel = "widget_" + texto_label.lower().replace(" ", "_").replace(":", "")
 
-            entry = ttk.Entry(self, width=40)
-            entry.grid(row=linha_atual, column=2, pady=5, sticky="ew")
-
-            # Guardamos uma referência ao entry para poder pegar o valor depois.
-            # Transforma "Nome do Professor:" em "entry_nome_do_professor"
-            nome_variavel = "entry_" + texto_label.lower().replace(" ", "_").replace(":", "")
-            setattr(self, nome_variavel, entry)
+            # *** ALTERAÇÃO 2: Criar Combobox para o campo "Cursos" e Entry para os outros. ***
+            if texto_label == "Cursos:":
+                # Cria o Combobox
+                combobox = ttk.Combobox(self, values=opcoes_cursos, state="readonly", width=38)
+                combobox.grid(row=linha_atual, column=2, pady=5, sticky="ew")
+                # Armazena a referência do Combobox
+                setattr(self, nome_variavel, combobox)
+            else:
+                # Cria o Entry para todos os outros campos
+                entry = ttk.Entry(self, width=40)
+                entry.grid(row=linha_atual, column=2, pady=5, sticky="ew")
+                # Armazena a referência do Entry
+                setattr(self, nome_variavel, entry)
 
         # --- Botão de Cadastro ---
-        # A linha do botão será a próxima linha depois do último campo do loop
         linha_botao = len(campos_formulario) + 1
         botao_cadastrar = ttk.Button(self, text="Cadastrar", command=self.cadastrar_professor)
         botao_cadastrar.grid(row=linha_botao, column=1, columnspan=2, pady=(30, 20), sticky="ew")
 
     def cadastrar_professor(self):
         """
-        Função chamada quando o botão 'Cadastrar' é pressionado.
-        Coleta os dados de todos os campos e os imprime.
-        """
-        print("--- Dados do Professor Cadastrado ---")
-
-        # Exemplo de como pegar os valores dos campos que foram criados dinamicamente:
-        nome_prof = self.entry_nome_do_professor.get()
-        cpf_prof = self.entry_cpf.get()
-        email_prof = self.entry_email.get() # Note que o "E-mail" virou "e_mail"
-
-        print(f"Nome: {nome_prof}")
-        print(f"CPF: {cpf_prof}")
-        print(f"E-mail: {email_prof}")
-        # Você pode adicionar os outros campos aqui...
-        print("---------------------------------")
-        # Aqui viria a lógica para salvar os dados em um banco de dados.
-    
-    def cadastrar_professor2(self):
-        """
         Coleta os dados dos campos, valida e simula o cadastro.
         """
+        # *** ALTERAÇÃO 3: Atualizamos a coleta de dados. ***
         # Coleta os dados de todos os campos
         dados_professor = {
-            "nome": self.entry_nome_do_professor.get(),
-            "cpf": self.entry_cpf.get(),
-            "telefone": self.entry_telefone.get(),
-            "email": self.entry_email.get(),
-            "matricula": self.entry_matricula.get(),
-            "curso1": self.entry_curso_1.get(),
-            "curso2": self.entry_curso_2.get(),
-            "curso3": self.entry_curso_3.get(),
-            "curso4": self.entry_curso_4.get()
+            "nome": self.widget_nome_do_professor.get(),
+            "cpf": self.widget_cpf.get(),
+            "telefone": self.widget_telefone.get(),
+            "email": self.widget_email.get(),
+            "matricula": self.widget_matricula.get(),
+            "cursos": self.widget_curso.get() # Pega o valor do Combobox
         }
 
-        # Validação simples: Verifica se o nome e CPF estão preenchidos
+        # Validação simples: Verifica se o nome, CPF e curso estão preenchidos
         if not dados_professor["nome"] or not dados_professor["cpf"]:
-            messagebox.showerror("Erro", "Nome e CPF são obrigatórios!")
+            self._mostrar_notificacao("Nome e CPF são obrigatórios!", "Error")
+            return
+        
+        if not dados_professor["cursos"]:
+            self._mostrar_notificacao("Por favor, selecione um curso!", "Error")
             return
 
-        # Simulação de cadastro (aqui você chamaria a função para salvar no banco de dados)
+        # Simulação de cadastro
         print("--- Dados do Professor para Salvar ---")
         for campo, valor in dados_professor.items():
             print(f"{campo.replace('_', ' ').title()}: {valor}")
         print("---------------------------------")
 
-        # Feedback ao usuário
-        messagebox.showinfo("Sucesso", "Professor cadastrado com sucesso!")
+        # Feedback ao usuário e limpeza dos campos
+        self._mostrar_notificacao("Professor cadastrado com sucesso!", "Success")
+        self._limpar_campos()
         
     def _mostrar_notificacao(self, mensagem, tipo):
         """
@@ -144,19 +139,23 @@ class TelaCadastroProfessor(ttk.Frame):
         
     def _limpar_campos(self):
         """
-        Limpa o texto de todos os campos de entrada (Entry).
+        Limpa o texto de todos os campos de entrada (Entry e Combobox).
         """
-        for campo in ["nome_do_professor", "cpf", "telefone", "email", "matricula",
-                      "curso_1", "curso_2", "curso_3", "curso_4"]:
-            entry = getattr(self, f"entry_{campo}", None)
-            if entry:
-                entry.delete(0, tk.END)
+        # *** ALTERAÇÃO 4: Atualizamos a lista de campos para limpar. ***
+        campos_para_limpar = [
+            "nome_do_professor", "cpf", "telefone", "email", "matricula"
+        ]
+        
+        for campo in campos_para_limpar:
+            widget = getattr(self, f"widget_{campo}", None)
+            if widget:
+                widget.delete(0, tk.END)
+
+        # Limpa a seleção do Combobox
+        self.widget_curso.set('')
 
 
 if __name__ == "__main__":
-    # Cria a janela principal da aplicação
     root = tk.Tk()
-    # Cria a nossa tela de cadastro dentro da janela principal
     app = TelaCadastroProfessor(root)
-    # Inicia o loop principal da aplicação
     root.mainloop()
