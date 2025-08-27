@@ -20,9 +20,9 @@ class TelaCadastroProfessor(ttk.Frame):
         self.style = ttk.Style(self.container)
         self.style.theme_use("clam")
 
-        BG_COLOR = "#e0e8f0" # Um azul acinzentado claro
+        BG_COLOR = "#0f01cd" # Um azul acinzentado claro
         self.style.configure("TFrame", background=BG_COLOR)
-        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12))
+        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12),foreground="white")
         self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
         self.style.configure("TButton", font=("Arial", 12, "bold"), padding=10)
         self.style.configure("TEntry", font=("Arial", 12), padding=5)
