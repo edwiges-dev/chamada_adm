@@ -21,9 +21,9 @@ class TelaConsultaChamada(ttk.Frame):
         self.style.theme_use("clam")
 
         # Define cores e fontes para os elementos
-        BG_COLOR = "#f0f8ff" # AliceBlue - um azul bem claro
+        BG_COLOR = "#0f01cd" # AliceBlue - um azul escuro
         self.style.configure("TFrame", background=BG_COLOR)
-        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12))
+        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12),foreground="white")
         self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
         self.style.configure("TButton", font=("Arial", 12, "bold"), padding=10)
         self.style.configure("Treeview.Heading", font=("Arial", 12, "bold"))
