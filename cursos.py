@@ -22,9 +22,10 @@ class TelaCadastroCurso(ttk.Frame):
         self.style.theme_use("clam") # 'clam', 'alt', 'default', 'classic' são boas opções
 
         # Estilo para o frame principal
-        self.style.configure("TFrame", background="#f0f0f0")
+        BG_COLOR = "#0f01cd" # Um azul escuro
+        self.style.configure("TFrame", background=BG_COLOR)
         # Estilo para os labels (rótulos)
-        self.style.configure("TLabel", background="#f0f0f0", font=("Arial", 12))
+        self.style.configure("TLabel", background=BG_COLOR, font=("Arial", 12), foreground="white")
         # Estilo para o título
         self.style.configure("Title.TLabel", font=("Arial", 18, "bold"))
         # Estilo para os botões
